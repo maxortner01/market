@@ -3,7 +3,8 @@
 #include "ground/util/flags.h"
 #include "ground/util/log.h"
 
-int main(int argc, char **argv)
+/// Applies exported buy candidates to the simulated portfolio file.
+int main(int argc, char** argv)
 {
     FLAGS(
         // buy_candidates.bin from market_engine Export.

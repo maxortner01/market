@@ -5,7 +5,8 @@
 namespace
 {
 
-u64 TimespecToNs(const timespec &ts)
+/// Converts a timespec from clock_gettime into nanoseconds.
+u64 TimespecToNs(const timespec& ts)
 {
     return static_cast<u64>(ts.tv_sec) * 1000000000ULL + static_cast<u64>(ts.tv_nsec);
 }

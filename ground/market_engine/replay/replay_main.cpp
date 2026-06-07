@@ -6,7 +6,8 @@
 namespace
 {
 
-bool CandidatesEqualIgnoringTimings(const BuyCandidates &left, const BuyCandidates &right)
+/// Compares candidate signal fields, ignoring per-run timing metadata.
+bool CandidatesEqualIgnoringTimings(const BuyCandidates& left, const BuyCandidates& right)
 {
     if (left.schemaVersion != right.schemaVersion || left.runId != right.runId ||
         left.count != right.count)
@@ -27,9 +28,10 @@ bool CandidatesEqualIgnoringTimings(const BuyCandidates &left, const BuyCandidat
 
 } // namespace
 
-int main(int argc, char **argv)
+/// Re-runs the pipeline with a fixed seed and optionally diffs against a golden file.
+int main(int argc, char** argv)
 {
-    const char *expectedPath = (argc >= 2 && argv[1] != nullptr) ? argv[1] : nullptr;
+    const char* expectedPath = (argc >= 2 && argv[1] != nullptr) ? argv[1] : nullptr;
 
     FetchConfig fetch = {};
     fetch.source = FetchSource::Mock;

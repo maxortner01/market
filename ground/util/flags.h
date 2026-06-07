@@ -8,20 +8,28 @@
 namespace ground
 {
 
+/// Parses --name=value flags from argv into caller-owned variables.
 class FlagParser
 {
   public:
-    explicit FlagParser(int argc, char **argv);
+    /// Captures argc/argv for a later Parse() call.
+    explicit FlagParser(int argc, char** argv);
 
-    FlagParser &U64(const char *name, u64 &value, u64 defaultValue = 0);
-    FlagParser &U32(const char *name, u32 &value, u32 defaultValue = 0);
-    FlagParser &String(const char *name, std::string &value, const std::string &defaultValue = "");
+    /// Registers a u64 flag; returns *this for chaining.
+    FlagParser& U64(const char* name, u64& value, u64 defaultValue = 0);
+    /// Registers a u32 flag; returns *this for chaining.
+    FlagParser& U32(const char* name, u32& value, u32 defaultValue = 0);
+    /// Registers a string flag; returns *this for chaining.
+    FlagParser& String(const char* name, std::string& value, const std::string& defaultValue = "");
 
+    /// Applies defaults then overrides from argv; false on unknown or malformed flags.
     [[nodiscard]] bool Parse();
 
   private:
+    /// Hard cap on registered flags per parser instance.
     static constexpr u32 kMaxFlags = 32;
 
+    /// Storage kind for a registered flag entry.
     enum class Kind : u8
     {
         U32,
@@ -29,21 +37,34 @@ class FlagParser
         String,
     };
 
+    /// Internal registry row linking a flag name to its destination variable.
     struct Entry
     {
+        /// Which scalar type this row holds.
         Kind kind;
-        const char *name;
-        u32 *u32Value;
+        /// Long option name without leading dashes.
+        const char* name;
+        /// Destination for u32 values (null when kind != U32).
+        u32* u32Value;
+        /// Default applied before argv overrides.
         u32 u32Default;
-        u64 *u64Value;
+        /// Destination for u64 values (null when kind != U64).
+        u64* u64Value;
+        /// Default applied before argv overrides.
         u64 u64Default;
-        std::string *stringValue;
+        /// Destination for string values (null when kind != String).
+        std::string* stringValue;
+        /// Default applied before argv overrides.
         std::string stringDefault;
     };
 
+    /// Argument count from main().
     int m_argc;
-    char **m_argv;
+    /// Argument vector from main().
+    char** m_argv;
+    /// Registered flag table.
     Entry m_entries[kMaxFlags];
+    /// Number of rows populated in m_entries.
     u32 m_entryCount;
 };
 

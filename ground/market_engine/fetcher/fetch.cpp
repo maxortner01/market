@@ -7,7 +7,7 @@
 namespace
 {
 
-// Cheap integer hash for deterministic mock price generation.
+/// Cheap integer hash for deterministic mock price generation.
 u32 MixSeed(u32 value)
 {
     value ^= value << 13;
@@ -16,6 +16,7 @@ u32 MixSeed(u32 value)
     return value;
 }
 
+/// Derives a mock last price from seed and record index.
 f64 PriceFromSeed(u32 seed, u32 index)
 {
     const u32 mixed = MixSeed(seed + index * 2654435761u);
@@ -25,7 +26,7 @@ f64 PriceFromSeed(u32 seed, u32 index)
 
 } // namespace
 
-bool FetchFromMock(const MockFetchInput &input, RawMarketData &out)
+bool FetchFromMock(const MockFetchInput& input, RawMarketData& out)
 {
     // Fixed-size mock universe so tests and benchmarks have stable shape.
     out.recordCount = 8;
@@ -41,7 +42,7 @@ bool FetchFromMock(const MockFetchInput &input, RawMarketData &out)
     return true;
 }
 
-bool FetchFromFile(const FileFetchInput &input, RawMarketData &out)
+bool FetchFromFile(const FileFetchInput& input, RawMarketData& out)
 {
     if (input.path.empty())
     {
@@ -57,7 +58,7 @@ bool FetchFromFile(const FileFetchInput &input, RawMarketData &out)
     }
 
     // Fixture layout: count followed by SoA columns.
-    file.read(reinterpret_cast<char *>(&out.recordCount), sizeof(out.recordCount));
+    file.read(reinterpret_cast<char*>(&out.recordCount), sizeof(out.recordCount));
     if (!file)
     {
         LOG_ERROR("FetchFromFile: failed to read record count from %s", input.path.c_str());
@@ -72,10 +73,10 @@ bool FetchFromFile(const FileFetchInput &input, RawMarketData &out)
 
     if (out.recordCount > 0)
     {
-        file.read(reinterpret_cast<char *>(out.symbolId), sizeof(u32) * out.recordCount);
-        file.read(reinterpret_cast<char *>(out.lastPrice), sizeof(f64) * out.recordCount);
-        file.read(reinterpret_cast<char *>(out.volume), sizeof(u64) * out.recordCount);
-        file.read(reinterpret_cast<char *>(out.timestampNs), sizeof(u64) * out.recordCount);
+        file.read(reinterpret_cast<char*>(out.symbolId), sizeof(u32) * out.recordCount);
+        file.read(reinterpret_cast<char*>(out.lastPrice), sizeof(f64) * out.recordCount);
+        file.read(reinterpret_cast<char*>(out.volume), sizeof(u64) * out.recordCount);
+        file.read(reinterpret_cast<char*>(out.timestampNs), sizeof(u64) * out.recordCount);
         if (!file)
         {
             LOG_ERROR("FetchFromFile: truncated file %s", input.path.c_str());
@@ -86,7 +87,7 @@ bool FetchFromFile(const FileFetchInput &input, RawMarketData &out)
     return true;
 }
 
-bool Fetch(const FetchConfig &config, RawMarketData &out)
+bool Fetch(const FetchConfig& config, RawMarketData& out)
 {
     switch (config.source)
     {

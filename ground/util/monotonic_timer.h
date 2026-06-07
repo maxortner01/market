@@ -13,5 +13,6 @@ class Timer
     u64 ElapsedNs() const;
 
   private:
+    /// Monotonic timestamp (ns) recorded by Start(); basis for elapsed timing.
     u64 m_startNs = 0;
 };

@@ -2,7 +2,7 @@
 
 #include "ground/util/log.h"
 
-bool RunMarketAnalysis(const MarketSnapshot &in, AnalysisState &out)
+bool RunMarketAnalysis(const MarketSnapshot& in, AnalysisState& out)
 {
     if (in.count > kMaxAnalysisSymbols)
     {

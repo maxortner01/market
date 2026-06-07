@@ -2,12 +2,13 @@
 
 #include <gtest/gtest.h>
 
+/// Verifies --name=value overrides are parsed into registered variables.
 TEST(FlagsTest, ParsesU32AndStringFlags)
 {
     char arg0[] = "test";
     char arg1[] = "--seed=99";
     char arg2[] = "--exportPath=/tmp/out.bin";
-    char *argv[] = {arg0, arg1, arg2};
+    char* argv[] = {arg0, arg1, arg2};
     int argc = 3;
 
     u32 seed = 0;
@@ -24,10 +25,11 @@ TEST(FlagsTest, ParsesU32AndStringFlags)
     EXPECT_EQ(exportPath, "/tmp/out.bin");
 }
 
+/// Verifies registered defaults apply when argv omits those flags.
 TEST(FlagsTest, AppliesDefaultsWhenFlagsMissing)
 {
     char arg0[] = "test";
-    char *argv[] = {arg0};
+    char* argv[] = {arg0};
     int argc = 1;
 
     u32 seed = 0;
