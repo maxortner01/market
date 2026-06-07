@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang clang-format python3
+
+      - uses: bazel-contrib/setup-bazel@0.19.0
+        with:
+          bazelisk-version: '1.21.0'
+
+      - name: clang-format check
+        run: sh format.sh --check
+
+      - name: Bazel test
+        run: bazel test //ground/... //testing/...
+
+      - name: Bazel opt build
+        run: bazel build //ground/... -c opt
+
+      - name: Bazel ASan test
+        run: bazel test //ground/... --config=asan
+
+      - name: Replay regression
+        run: bazel test //ground/market_engine/replay:replay_test

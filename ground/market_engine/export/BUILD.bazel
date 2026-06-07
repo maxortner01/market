@@ -1,0 +1,20 @@
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
+
+cc_library(
+    name = "export",
+    srcs = ["export.cpp"],
+    hdrs = ["export.h"],
+    include_prefix = "ground/market_engine/export",
+    strip_include_prefix = "",
+    visibility = ["//visibility:public"],
+    deps = ["//ground/market_engine/core:core"],
+)
+
+cc_test(
+    name = "export_test",
+    srcs = ["export_test.cpp"],
+    deps = [
+        ":export",
+        "@googletest//:gtest_main",
+    ],
+)

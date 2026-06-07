@@ -1,0 +1,8 @@
+{
+  "benchmarks": [
+    {
+      "name": "BM_RunPipeline",
+      "real_time_threshold_ns": 10000000
+    }
+  ]
+}

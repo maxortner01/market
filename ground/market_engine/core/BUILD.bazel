@@ -1,0 +1,10 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "core",
+    hdrs = ["core.h"],
+    include_prefix = "ground/market_engine/core",
+    strip_include_prefix = "",
+    visibility = ["//visibility:public"],
+    deps = ["//ground/util:util"],
+)

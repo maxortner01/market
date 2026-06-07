@@ -1,0 +1,33 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library", "cc_test")
+
+cc_library(
+    name = "paper_executor",
+    srcs = ["paper_executor.cpp"],
+    hdrs = ["paper_executor.h"],
+    include_prefix = "ground/paper_execution",
+    strip_include_prefix = "",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//ground/market_engine/core:core",
+        "//ground/market_engine/export:export",
+    ],
+)
+
+cc_binary(
+    name = "paper_execution",
+    srcs = ["main.cpp"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":paper_executor",
+        "//ground/util:util",
+    ],
+)
+
+cc_test(
+    name = "paper_executor_test",
+    srcs = ["paper_executor_test.cpp"],
+    deps = [
+        ":paper_executor",
+        "@googletest//:gtest_main",
+    ],
+)

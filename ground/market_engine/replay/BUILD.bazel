@@ -1,0 +1,22 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_test")
+
+cc_binary(
+    name = "replay",
+    srcs = ["replay_main.cpp"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//ground/market_engine/export:export",
+        "//ground/market_engine/pipeline:pipeline",
+        "//ground/util:util",
+    ],
+)
+
+cc_test(
+    name = "replay_test",
+    srcs = ["replay_test.cpp"],
+    deps = [
+        "//ground/market_engine/export:export",
+        "//ground/market_engine/pipeline:pipeline",
+        "@googletest//:gtest_main",
+    ],
+)

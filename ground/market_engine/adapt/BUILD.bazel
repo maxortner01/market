@@ -1,0 +1,11 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "adapt",
+    srcs = ["adapt.cpp"],
+    hdrs = ["adapt.h"],
+    include_prefix = "ground/market_engine/adapt",
+    strip_include_prefix = "",
+    visibility = ["//visibility:public"],
+    deps = ["//ground/market_engine/core:core"],
+)

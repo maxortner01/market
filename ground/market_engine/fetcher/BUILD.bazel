@@ -1,0 +1,30 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library", "cc_test")
+
+cc_library(
+    name = "fetcher",
+    srcs = ["fetch.cpp"],
+    hdrs = ["fetch.h"],
+    include_prefix = "ground/market_engine/fetcher",
+    strip_include_prefix = "",
+    visibility = ["//visibility:public"],
+    deps = ["//ground/market_engine/core:core"],
+)
+
+cc_test(
+    name = "fetch_test",
+    srcs = ["fetch_test.cpp"],
+    deps = [
+        ":fetcher",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_binary(
+    name = "fetch_bench",
+    testonly = True,
+    srcs = ["fetch_bench.cpp"],
+    deps = [
+        ":fetcher",
+        "@google_benchmark//:benchmark_main",
+    ],
+)

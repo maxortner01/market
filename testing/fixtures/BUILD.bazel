@@ -1,0 +1,13 @@
+exports_files(["raw_market_data.bin"])
+
+filegroup(
+    name = "raw_market_data",
+    srcs = ["raw_market_data.bin"],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "fixtures",
+    srcs = ["raw_market_data.bin"],
+    visibility = ["//visibility:public"],
+)

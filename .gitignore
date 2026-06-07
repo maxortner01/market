@@ -1,0 +1,9 @@
+/bazel-*
+/bazel-out/
+/bazel-testlogs/
+/bazel-bin/
+*.bin
+!testing/fixtures/*.bin
+*.audit.bin
+results.json
+.cursor

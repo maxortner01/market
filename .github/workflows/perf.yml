@@ -1,0 +1,31 @@
+name: Perf
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: bazel-contrib/setup-bazel@0.19.0
+        with:
+          bazelisk-version: '1.21.0'
+
+      - name: Run pipeline benchmark
+        run: |
+          bazel run //ground/market_engine/pipeline:pipeline_bench -- \
+            --benchmark_format=json \
+            --benchmark_out="${GITHUB_WORKSPACE}/results.json"
+          test -f "${GITHUB_WORKSPACE}/results.json"
+
+      - name: Compare against baseline
+        run: python3 testing/benchmarks/compare_benchmark.py "${GITHUB_WORKSPACE}/results.json" testing/benchmarks/baseline.json
+
+      - name: Upload benchmark results
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-results
+          path: ${{ github.workspace }}/results.json

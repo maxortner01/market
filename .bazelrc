@@ -1,0 +1,15 @@
+common --enable_bzlmod
+
+build --cxxopt=-std=c++17
+build --copt=-Wall
+build --copt=-Wextra
+
+build:opt -c opt
+build:opt --copt=-O3
+
+build:asan --strip=never
+build:asan --copt=-fsanitize=address
+build:asan --copt=-fno-omit-frame-pointer
+build:asan --linkopt=-fsanitize=address
+
+test --test_output=errors
