@@ -1,4 +1,5 @@
 common --enable_bzlmod
+common --enable_platform_specific_config
 
 build --cxxopt=-std=c++17
 build --copt=-Wall
@@ -13,3 +14,8 @@ build:asan --copt=-fno-omit-frame-pointer
 build:asan --linkopt=-fsanitize=address
 
 test --test_output=errors
+
+# Demote /usr/local/include so a system-installed gtest (e.g. from Homebrew) does
+# not shadow Bazel's @googletest headers when compiling googletest itself.
+build:macos --copt=-idirafter
+build:macos --copt=/usr/local/include

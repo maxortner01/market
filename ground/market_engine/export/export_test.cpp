@@ -2,6 +2,7 @@
 
 #include <gtest/gtest.h>
 
+/// Verifies WriteBuyCandidates and ReadBuyCandidates preserve struct fields.
 TEST(ExportTest, WriteAndReadBuyCandidatesRoundTrip)
 {
     BuyCandidates original = {};

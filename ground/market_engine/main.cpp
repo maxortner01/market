@@ -3,7 +3,8 @@
 #include "ground/util/flags.h"
 #include "ground/util/log.h"
 
-int main(int argc, char **argv)
+/// Runs the full market_engine pipeline and writes buy_candidates.bin.
+int main(int argc, char** argv)
 {
     FLAGS(
         // PRNG seed for mock fetch when fetchPath is empty.

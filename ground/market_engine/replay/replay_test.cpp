@@ -6,20 +6,19 @@
 namespace
 {
 
-PipelineConfig MakeReplayConfig(const char *exportPath)
+/// Builds a replay PipelineConfig with seed 42 and the given export path.
+PipelineConfig MakeReplayConfig(const std::string& exportPath)
 {
     PipelineConfig config = {};
     config.fetch.source = FetchSource::Mock;
     config.fetch.input.mock.seed = 42;
     config.runId = 100;
-    for (u32 i = 0; i < kMaxPathLen && exportPath[i] != '\0'; ++i)
-    {
-        config.exportPath[i] = exportPath[i];
-    }
+    config.exportPath = exportPath;
     return config;
 }
 
-bool CandidatesEqualIgnoringTimings(const BuyCandidates &left, const BuyCandidates &right)
+/// Compares candidate signal fields, ignoring per-run timing metadata.
+bool CandidatesEqualIgnoringTimings(const BuyCandidates& left, const BuyCandidates& right)
 {
     if (left.schemaVersion != right.schemaVersion)
     {
@@ -54,10 +53,11 @@ bool CandidatesEqualIgnoringTimings(const BuyCandidates &left, const BuyCandidat
 
 } // namespace
 
+/// Verifies two runs with the same seed produce identical candidate signals.
 TEST(ReplayTest, DeterministicPipelineOutputForSameSeed)
 {
-    const char *firstPath = "replay_first.bin";
-    const char *secondPath = "replay_second.bin";
+    const char* firstPath = "replay_first.bin";
+    const char* secondPath = "replay_second.bin";
 
     BuyCandidates first = {};
     BuyCandidates second = {};

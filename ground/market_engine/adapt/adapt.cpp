@@ -2,7 +2,7 @@
 
 #include "ground/util/log.h"
 
-bool InputAdapt(const RawMarketData &in, MarketSnapshot &out)
+bool InputAdapt(const RawMarketData& in, MarketSnapshot& out)
 {
     if (in.recordCount > kMaxSymbols)
     {
@@ -22,7 +22,7 @@ bool InputAdapt(const RawMarketData &in, MarketSnapshot &out)
     return true;
 }
 
-bool OutputAdapt(const RiskState &in, BuyCandidates &out)
+bool OutputAdapt(const RiskState& in, BuyCandidates& out)
 {
     if (in.count > kMaxCandidates)
     {

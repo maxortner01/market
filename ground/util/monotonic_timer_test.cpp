@@ -4,6 +4,7 @@
 
 #include <gtest/gtest.h>
 
+/// Verifies elapsed time grows after a short sleep.
 TEST(TimerTest, ElapsedNsIncreasesAfterSleep)
 {
     Timer timer;
@@ -13,6 +14,7 @@ TEST(TimerTest, ElapsedNsIncreasesAfterSleep)
     EXPECT_GE(elapsedNs, 5000000ULL);
 }
 
+/// Verifies elapsed time is near zero immediately after Start().
 TEST(TimerTest, ElapsedNsIsZeroImmediatelyAfterStart)
 {
     Timer timer;

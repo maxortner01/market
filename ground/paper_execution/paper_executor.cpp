@@ -5,9 +5,10 @@
 
 #include <fstream>
 
+/// Layout version written to portfolio.bin on create or update.
 static constexpr u32 kPortfolioSchemaVersion = 1;
 
-bool RunPaperExecution(const std::string &candidatesPath, const std::string &portfolioPath)
+bool RunPaperExecution(const std::string& candidatesPath, const std::string& portfolioPath)
 {
     BuyCandidates candidates = {};
     if (!ReadBuyCandidates(candidatesPath, candidates))
@@ -20,7 +21,7 @@ bool RunPaperExecution(const std::string &candidatesPath, const std::string &por
         std::ifstream file(portfolioPath, std::ios::binary);
         if (file.is_open())
         {
-            file.read(reinterpret_cast<char *>(&portfolio), sizeof(portfolio));
+            file.read(reinterpret_cast<char*>(&portfolio), sizeof(portfolio));
             if (!file)
             {
                 LOG_ERROR("RunPaperExecution: failed to read portfolio %s", portfolioPath.c_str());
@@ -60,7 +61,7 @@ bool RunPaperExecution(const std::string &candidatesPath, const std::string &por
         LOG_ERROR("RunPaperExecution: failed to open portfolio %s", portfolioPath.c_str());
         return false;
     }
-    out.write(reinterpret_cast<const char *>(&portfolio), sizeof(portfolio));
+    out.write(reinterpret_cast<const char*>(&portfolio), sizeof(portfolio));
     if (!out)
     {
         LOG_ERROR("RunPaperExecution: failed to write portfolio %s", portfolioPath.c_str());

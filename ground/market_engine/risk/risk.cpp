@@ -2,9 +2,10 @@
 
 #include "ground/util/log.h"
 
+/// Flat notional cap applied to every symbol until real risk models exist.
 static constexpr f64 kDefaultMaxNotional = 10000.0;
 
-bool RunRiskAnalysis(const AnalysisState &in, RiskState &out)
+bool RunRiskAnalysis(const AnalysisState& in, RiskState& out)
 {
     if (in.count > kMaxRiskSymbols)
     {

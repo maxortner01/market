@@ -7,18 +7,19 @@
 namespace
 {
 
-// Write a minimal binary fixture matching FetchFromFile's expected layout.
-void WriteFixtureFile(const char *path, const RawMarketData &data)
+/// Writes a minimal binary fixture matching FetchFromFile's expected layout.
+void WriteFixtureFile(const char* path, const RawMarketData& data)
 {
     std::ofstream file(path, std::ios::binary);
     ASSERT_TRUE(file.is_open());
-    file.write(reinterpret_cast<const char *>(&data.recordCount), sizeof(data.recordCount));
-    file.write(reinterpret_cast<const char *>(data.symbolId), sizeof(u32) * data.recordCount);
-    file.write(reinterpret_cast<const char *>(data.lastPrice), sizeof(f64) * data.recordCount);
-    file.write(reinterpret_cast<const char *>(data.volume), sizeof(u64) * data.recordCount);
-    file.write(reinterpret_cast<const char *>(data.timestampNs), sizeof(u64) * data.recordCount);
+    file.write(reinterpret_cast<const char*>(&data.recordCount), sizeof(data.recordCount));
+    file.write(reinterpret_cast<const char*>(data.symbolId), sizeof(u32) * data.recordCount);
+    file.write(reinterpret_cast<const char*>(data.lastPrice), sizeof(f64) * data.recordCount);
+    file.write(reinterpret_cast<const char*>(data.volume), sizeof(u64) * data.recordCount);
+    file.write(reinterpret_cast<const char*>(data.timestampNs), sizeof(u64) * data.recordCount);
 }
 
+/// Builds a four-record RawMarketData for file-fetch tests.
 RawMarketData MakeFixtureData()
 {
     RawMarketData data = {};
@@ -44,6 +45,7 @@ RawMarketData MakeFixtureData()
 
 } // namespace
 
+/// Verifies the same seed yields identical mock records across calls.
 TEST(FetchFromMockTest, ProducesDeterministicRecordsForSeed)
 {
     MockFetchInput input = {};
@@ -60,9 +62,10 @@ TEST(FetchFromMockTest, ProducesDeterministicRecordsForSeed)
     EXPECT_DOUBLE_EQ(first.lastPrice[3], second.lastPrice[3]);
 }
 
+/// Verifies a written fixture round-trips through FetchFromFile.
 TEST(FetchFromFileTest, ReadsFixtureFile)
 {
-    const char *path = "fetch_fixture_temp.bin";
+    const char* path = "fetch_fixture_temp.bin";
     const RawMarketData fixture = MakeFixtureData();
     WriteFixtureFile(path, fixture);
 

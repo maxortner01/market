@@ -5,22 +5,20 @@
 namespace
 {
 
+/// Builds a PipelineConfig that uses mock fetch with seed 42.
 PipelineConfig MakeMockConfig()
 {
     PipelineConfig config = {};
     config.fetch.source = FetchSource::Mock;
     config.fetch.input.mock.seed = 42;
     config.runId = 1;
-    const char *exportPath = "pipeline_test_output.bin";
-    for (u32 i = 0; i < kMaxPathLen && exportPath[i] != '\0'; ++i)
-    {
-        config.exportPath[i] = exportPath[i];
-    }
+    config.exportPath = "pipeline_test_output.bin";
     return config;
 }
 
 } // namespace
 
+/// Verifies a mock run completes and records non-zero stage timings.
 TEST(PipelineTest, RunPipelineProducesCandidatesWithMockFetch)
 {
     PipelineConfig config = MakeMockConfig();
@@ -34,6 +32,7 @@ TEST(PipelineTest, RunPipelineProducesCandidatesWithMockFetch)
     EXPECT_GT(candidates.fetchDurationNs, 0u);
 }
 
+/// Verifies stable symbol ids, scores, and notional caps for seed 42.
 TEST(PipelineTest, GoldenCandidateFieldsForSeed42)
 {
     PipelineConfig config = MakeMockConfig();

@@ -6,6 +6,7 @@
 
 #include <gtest/gtest.h>
 
+/// Verifies candidates update portfolio qty and lastRunId on first application.
 TEST(PaperExecutorTest, AppliesCandidatesToPortfolio)
 {
     BuyCandidates candidates = {};
@@ -27,7 +28,7 @@ TEST(PaperExecutorTest, AppliesCandidatesToPortfolio)
     Portfolio portfolio = {};
     std::ifstream file(portfolioPath, std::ios::binary);
     ASSERT_TRUE(file.is_open());
-    file.read(reinterpret_cast<char *>(&portfolio), sizeof(portfolio));
+    file.read(reinterpret_cast<char*>(&portfolio), sizeof(portfolio));
 
     EXPECT_EQ(portfolio.lastRunId, 42u);
     EXPECT_EQ(portfolio.count, 2u);
@@ -35,6 +36,7 @@ TEST(PaperExecutorTest, AppliesCandidatesToPortfolio)
     EXPECT_DOUBLE_EQ(portfolio.qty[1], 100.0);
 }
 
+/// Verifies re-running with the same runId leaves the portfolio unchanged.
 TEST(PaperExecutorTest, IsIdempotentForSameRunId)
 {
     BuyCandidates candidates = {};
@@ -52,7 +54,7 @@ TEST(PaperExecutorTest, IsIdempotentForSameRunId)
     Portfolio first = {};
     std::ifstream file(portfolioPath, std::ios::binary);
     ASSERT_TRUE(file.is_open());
-    file.read(reinterpret_cast<char *>(&first), sizeof(first));
+    file.read(reinterpret_cast<char*>(&first), sizeof(first));
     file.close();
 
     ASSERT_TRUE(RunPaperExecution(candidatesPath, portfolioPath));
@@ -60,7 +62,7 @@ TEST(PaperExecutorTest, IsIdempotentForSameRunId)
     Portfolio second = {};
     file.open(portfolioPath, std::ios::binary);
     ASSERT_TRUE(file.is_open());
-    file.read(reinterpret_cast<char *>(&second), sizeof(second));
+    file.read(reinterpret_cast<char*>(&second), sizeof(second));
 
     EXPECT_EQ(first.count, second.count);
     EXPECT_DOUBLE_EQ(first.qty[0], second.qty[0]);

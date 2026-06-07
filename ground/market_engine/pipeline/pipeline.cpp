@@ -15,6 +15,7 @@
 namespace
 {
 
+/// Returns the current wall-clock time in nanoseconds for run metadata.
 u64 WallClockNs()
 {
     timespec ts = {};
@@ -24,23 +25,17 @@ u64 WallClockNs()
 
 } // namespace
 
-PipelineStatus RunPipeline(const FetchConfig &fetch, const std::string &exportPath, u64 runId,
-                           BuyCandidates &out)
+PipelineStatus RunPipeline(const FetchConfig& fetch, const std::string& exportPath, u64 runId,
+                           BuyCandidates& out)
 {
     PipelineConfig config = {};
     config.fetch = fetch;
     config.runId = runId;
-
-    // PipelineConfig still uses a fixed char buffer for export path in the POD layout.
-    const u32 pathLen =
-        static_cast<u32>(std::min(exportPath.size(), static_cast<std::size_t>(kMaxPathLen - 1)));
-    std::memcpy(config.exportPath, exportPath.data(), pathLen);
-    config.exportPath[pathLen] = '\0';
-
+    config.exportPath = exportPath;
     return RunPipeline(config, out);
 }
 
-PipelineStatus RunPipeline(const PipelineConfig &config, BuyCandidates &out)
+PipelineStatus RunPipeline(const PipelineConfig& config, BuyCandidates& out)
 {
     out = {};
     out.schemaVersion = kSchemaVersion;

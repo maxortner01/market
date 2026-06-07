@@ -2,7 +2,8 @@
 
 #include <benchmark/benchmark.h>
 
-static void BM_FetchFromMock(benchmark::State &state)
+/// Measures FetchFromMock throughput for a fixed seed.
+static void BM_FetchFromMock(benchmark::State& state)
 {
     MockFetchInput input = {};
     input.seed = 42;

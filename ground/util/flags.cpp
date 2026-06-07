@@ -7,9 +7,9 @@
 namespace ground
 {
 
-FlagParser::FlagParser(int argc, char **argv) : m_argc(argc), m_argv(argv), m_entryCount(0) {}
+FlagParser::FlagParser(int argc, char** argv) : m_argc(argc), m_argv(argv), m_entryCount(0) {}
 
-FlagParser &FlagParser::U64(const char *name, u64 &value, u64 defaultValue)
+FlagParser& FlagParser::U64(const char* name, u64& value, u64 defaultValue)
 {
     if (m_entryCount >= kMaxFlags || name == nullptr)
     {
@@ -27,7 +27,7 @@ FlagParser &FlagParser::U64(const char *name, u64 &value, u64 defaultValue)
     return *this;
 }
 
-FlagParser &FlagParser::U32(const char *name, u32 &value, u32 defaultValue)
+FlagParser& FlagParser::U32(const char* name, u32& value, u32 defaultValue)
 {
     if (m_entryCount >= kMaxFlags || name == nullptr)
     {
@@ -45,8 +45,8 @@ FlagParser &FlagParser::U32(const char *name, u32 &value, u32 defaultValue)
     return *this;
 }
 
-FlagParser &FlagParser::String(const char *name, std::string &value,
-                               const std::string &defaultValue)
+FlagParser& FlagParser::String(const char* name, std::string& value,
+                               const std::string& defaultValue)
 {
     if (m_entryCount >= kMaxFlags || name == nullptr)
     {
@@ -85,16 +85,16 @@ bool FlagParser::Parse()
 
     for (int argIndex = 1; argIndex < m_argc; ++argIndex)
     {
-        const char *arg = m_argv[argIndex];
+        const char* arg = m_argv[argIndex];
         if (arg == nullptr || arg[0] != '-' || arg[1] != '-')
         {
             continue;
         }
 
-        const char *flagBody = arg + 2;
-        const char *equalSign = std::strchr(flagBody, '=');
+        const char* flagBody = arg + 2;
+        const char* equalSign = std::strchr(flagBody, '=');
         std::string flagName;
-        const char *flagValue = nullptr;
+        const char* flagValue = nullptr;
 
         if (equalSign != nullptr)
         {

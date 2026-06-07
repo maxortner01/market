@@ -5,23 +5,21 @@
 namespace
 {
 
+/// Builds a PipelineConfig tuned for benchmark iteration overhead.
 PipelineConfig MakeBenchConfig()
 {
     PipelineConfig config = {};
     config.fetch.source = FetchSource::Mock;
     config.fetch.input.mock.seed = 7;
     config.runId = 99;
-    const char *exportPath = "pipeline_bench_output.bin";
-    for (u32 i = 0; i < kMaxPathLen && exportPath[i] != '\0'; ++i)
-    {
-        config.exportPath[i] = exportPath[i];
-    }
+    config.exportPath = "pipeline_bench_output.bin";
     return config;
 }
 
 } // namespace
 
-static void BM_RunPipeline(benchmark::State &state)
+/// Measures end-to-end RunPipeline latency with mock fetch.
+static void BM_RunPipeline(benchmark::State& state)
 {
     PipelineConfig config = MakeBenchConfig();
     for (auto _ : state)

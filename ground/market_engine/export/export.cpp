@@ -7,7 +7,8 @@
 namespace
 {
 
-RunAudit BuildAudit(const BuyCandidates &candidates)
+/// Builds a RunAudit sidecar from the timing and metadata fields on candidates.
+RunAudit BuildAudit(const BuyCandidates& candidates)
 {
     RunAudit audit = {};
     audit.schemaVersion = candidates.schemaVersion;
@@ -25,7 +26,7 @@ RunAudit BuildAudit(const BuyCandidates &candidates)
 
 } // namespace
 
-bool WriteBuyCandidates(const std::string &path, const BuyCandidates &candidates)
+bool WriteBuyCandidates(const std::string& path, const BuyCandidates& candidates)
 {
     std::ofstream file(path, std::ios::binary);
     if (!file.is_open())
@@ -34,7 +35,7 @@ bool WriteBuyCandidates(const std::string &path, const BuyCandidates &candidates
         return false;
     }
     // Whole struct written verbatim — schema_version guards layout evolution.
-    file.write(reinterpret_cast<const char *>(&candidates), sizeof(candidates));
+    file.write(reinterpret_cast<const char*>(&candidates), sizeof(candidates));
     if (!file)
     {
         LOG_ERROR("WriteBuyCandidates: failed to write %s", path.c_str());
@@ -43,7 +44,7 @@ bool WriteBuyCandidates(const std::string &path, const BuyCandidates &candidates
     return true;
 }
 
-bool ReadBuyCandidates(const std::string &path, BuyCandidates &out)
+bool ReadBuyCandidates(const std::string& path, BuyCandidates& out)
 {
     std::ifstream file(path, std::ios::binary);
     if (!file.is_open())
@@ -51,7 +52,7 @@ bool ReadBuyCandidates(const std::string &path, BuyCandidates &out)
         LOG_ERROR("ReadBuyCandidates: failed to open %s", path.c_str());
         return false;
     }
-    file.read(reinterpret_cast<char *>(&out), sizeof(out));
+    file.read(reinterpret_cast<char*>(&out), sizeof(out));
     if (!file)
     {
         LOG_ERROR("ReadBuyCandidates: failed to read %s", path.c_str());
@@ -60,7 +61,7 @@ bool ReadBuyCandidates(const std::string &path, BuyCandidates &out)
     return true;
 }
 
-bool WriteRunAudit(const std::string &path, const RunAudit &audit)
+bool WriteRunAudit(const std::string& path, const RunAudit& audit)
 {
     std::ofstream file(path, std::ios::binary);
     if (!file.is_open())
@@ -68,7 +69,7 @@ bool WriteRunAudit(const std::string &path, const RunAudit &audit)
         LOG_ERROR("WriteRunAudit: failed to open %s", path.c_str());
         return false;
     }
-    file.write(reinterpret_cast<const char *>(&audit), sizeof(audit));
+    file.write(reinterpret_cast<const char*>(&audit), sizeof(audit));
     if (!file)
     {
         LOG_ERROR("WriteRunAudit: failed to write %s", path.c_str());
@@ -77,7 +78,7 @@ bool WriteRunAudit(const std::string &path, const RunAudit &audit)
     return true;
 }
 
-bool Export(const std::string &exportPath, const BuyCandidates &candidates)
+bool Export(const std::string& exportPath, const BuyCandidates& candidates)
 {
     if (!WriteBuyCandidates(exportPath, candidates))
     {
@@ -87,7 +88,7 @@ bool Export(const std::string &exportPath, const BuyCandidates &candidates)
     return WriteRunAudit(exportPath + ".audit.bin", BuildAudit(candidates));
 }
 
-bool Export(const char *exportPath, const BuyCandidates &candidates)
+bool Export(const char* exportPath, const BuyCandidates& candidates)
 {
     if (exportPath == nullptr)
     {
